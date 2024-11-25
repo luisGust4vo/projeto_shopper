@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { Client } from "@googlemaps/google-maps-services-js";
 import dotenv from "dotenv";
 
-// Carregar variáveis de ambiente
+// Carregar variáveis de ambiente teste
 dotenv.config();
 
 const app = express();
