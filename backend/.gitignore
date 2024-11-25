@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Diretórios do compilador TypeScript
+dist/
+build/
+
+# Dependências do ambiente de desenvolvimento
+.env
+
+# Arquivos de configuração do editor (por exemplo, VSCode)
+.vscode/
+
+# Dependências do pacote de testes
+coverage/
+
+# Arquivos de lock do npm/yarn
+package-lock.json
+yarn.lock
