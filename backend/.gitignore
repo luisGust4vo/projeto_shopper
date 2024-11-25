@@ -25,5 +25,4 @@ coverage/
 # Arquivos de lock do npm/yarn
 package-lock.json
 yarn.lock
-#env
-.env
+
