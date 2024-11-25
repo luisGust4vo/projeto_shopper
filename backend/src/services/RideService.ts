@@ -1,37 +1,10 @@
-// src/services/RideService.ts
 import { Client } from "@googlemaps/google-maps-services-js";
 import { RideEstimateDTO } from "../dtos/RideEstimateDTO";
+import { AppDataSource } from "../data-source";
+import { Driver } from "../entities/Driver";
+import { LessThanOrEqual } from "typeorm";
 
 const client = new Client({});
-const drivers = [
-  {
-    id: "1",
-    name: "Motorista A",
-    description: "Motorista experiente",
-    car: "Carro 1",
-    rating: 4.5,
-    minDistance: 5,
-    pricePerKm: 2.0,
-  },
-  {
-    id: "2",
-    name: "Motorista B",
-    description: "Motorista rápido",
-    car: "Carro 2",
-    rating: 4.8,
-    minDistance: 3,
-    pricePerKm: 2.5,
-  },
-  {
-    id: "3",
-    name: "Motorista C",
-    description: "Motorista amigável",
-    car: "Carro 3",
-    rating: 4.0,
-    minDistance: 10,
-    pricePerKm: 1.8,
-  },
-];
 
 export const calculateRideEstimate = async (
   data: RideEstimateDTO,
@@ -52,15 +25,19 @@ export const calculateRideEstimate = async (
   const distance = leg.distance.value / 1000;
   const duration = leg.duration.text;
 
-  const availableDrivers = drivers.filter(
-    (driver) => driver.minDistance <= distance
-  );
+  // buscando motoristas no banco de dados
+  const driverRepository = AppDataSource.getRepository(Driver);
+  const availableDrivers = await driverRepository.find({
+    where: {
+      minDistance: LessThanOrEqual(distance),
+    },
+  });
 
   const driverList = availableDrivers.map((driver) => {
     const totalCost = distance * driver.pricePerKm;
     return {
       id: driver.id,
-      name: driver.name,
+      name: driver.nome,
       description: driver.description,
       car: driver.car,
       rating: driver.rating,
