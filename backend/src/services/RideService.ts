@@ -1,8 +1,7 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import { RideEstimateDTO } from "../dtos/RideEstimateDTO";
-import { AppDataSource } from "../data-source";
-import { Driver } from "../entities/Driver";
-import { LessThanOrEqual } from "typeorm";
+import { AppDataSource } from "../data-source"; // Importando a conexão do banco
+import { Driver } from "../entities/Driver"; // Importando a entidade Driver
+import { RideEstimateDTO } from "../dtos/RideEstimateDTO"; // DTO de estimativa de viagem
 
 const client = new Client({});
 
@@ -12,6 +11,7 @@ export const calculateRideEstimate = async (
 ) => {
   const { origin, destination } = data;
 
+  // Fazendo a requisição para a API do Google Maps para obter a rota
   const response = await client.directions({
     params: {
       origin,
@@ -22,17 +22,16 @@ export const calculateRideEstimate = async (
 
   const route = response.data.routes[0];
   const leg = route.legs[0];
-  const distance = leg.distance.value / 1000;
-  const duration = leg.duration.text;
+  const distance = leg.distance.value / 1000; // Convertendo para quilômetros
+  const duration = leg.duration.text; // A duração da viagem
 
-  // buscando motoristas no banco de dados
-  const driverRepository = AppDataSource.getRepository(Driver);
-  const availableDrivers = await driverRepository.find({
-    where: {
-      minDistance: LessThanOrEqual(distance),
-    },
-  });
+  // Buscando motoristas no banco de dados que têm uma distância mínima adequada
+  const availableDrivers = await AppDataSource.getRepository(Driver)
+    .createQueryBuilder("driver")
+    .where("driver.minDistance <= :distance", { distance })
+    .getMany();
 
+  // Calculando o custo total para cada motorista e retornando a lista
   const driverList = availableDrivers.map((driver) => {
     const totalCost = distance * driver.pricePerKm;
     return {
@@ -45,10 +44,12 @@ export const calculateRideEstimate = async (
     };
   });
 
+  // Ordenando os motoristas pelo custo total de menor para maior
   const sortedDrivers = driverList.sort(
     (a, b) => parseFloat(a.total_cost) - parseFloat(b.total_cost)
   );
 
+  // Retornando os dados da estimativa de viagem e motoristas disponíveis
   return {
     origin_latitude: leg.start_location.lat,
     origin_longitude: leg.start_location.lng,

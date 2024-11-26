@@ -17,7 +17,7 @@ export class Driver {
   @Column("float")
   rating: number;
 
-  @Column()
+  @Column("float")
   minDistance: number;
 
   @Column("float")
