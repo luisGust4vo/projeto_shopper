@@ -1,7 +1,7 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import { AppDataSource } from "../data-source"; // Importando a conexão do banco
-import { Driver } from "../entities/Driver"; // Importando a entidade Driver
-import { RideEstimateDTO } from "../dtos/RideEstimateDTO"; // DTO de estimativa de viagem
+import { AppDataSource } from "../data-source";
+import { Driver } from "../entities/Driver";
+import { RideEstimateDTO } from "../dtos/RideEstimateDTO";
 
 const client = new Client({});
 
@@ -11,7 +11,6 @@ export const calculateRideEstimate = async (
 ) => {
   const { origin, destination } = data;
 
-  // Fazendo a requisição para a API do Google Maps para obter a rota
   const response = await client.directions({
     params: {
       origin,

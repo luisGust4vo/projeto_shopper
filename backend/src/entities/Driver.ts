@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity("drivers") // Nome da tabela no banco de dados
+@Entity("drivers")
 export class Driver {
   @PrimaryGeneratedColumn()
   id?: number;
 
   @Column()
-  name: string; // Altere de 'nome' para 'name'
+  name: string;
 
   @Column()
   description: string;
@@ -31,7 +31,7 @@ export class Driver {
     minDistance: number,
     pricePerKm: number
   ) {
-    this.name = name; // Atualize o construtor
+    this.name = name;
     this.description = description;
     this.car = car;
     this.rating = rating;
