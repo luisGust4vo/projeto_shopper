@@ -37,7 +37,7 @@ export const calculateRideEstimate = async (
     const totalCost = distance * driver.pricePerKm;
     return {
       id: driver.id,
-      name: driver.nome,
+      name: driver.name,
       description: driver.description,
       car: driver.car,
       rating: driver.rating,

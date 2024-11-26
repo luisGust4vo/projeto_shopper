@@ -4,15 +4,15 @@ import { DataSource } from "typeorm";
 import { Driver } from "./entities/Driver";
 
 export const AppDataSource = new DataSource({
-  type: "postgres", // ou o tipo do banco de dados que você está usando
-  host: "localhost", // Endereço do banco de dados
-  port: 5432, // Porta do banco de dados
-  username: "postgres", // Usuário do banco
-  password: "root", // Senha do banco
-  database: "shopper", // Nome do banco
-  synchronize: false, // Não sincroniza automaticamente, vamos usar migrations
+  type: "postgres",
+  host: "localhost",
+  port: 5432,
+  username: "postgres",
+  password: "root",
+  database: "shopper",
+  synchronize: false,
   logging: true,
-  entities: [Driver], // Adiciona suas entidades aqui
-  migrations: ["src/migrations/*.ts"], // Caminho para suas migrations
+  entities: [Driver],
+  migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });
